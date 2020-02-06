@@ -1,22 +1,25 @@
 public class Necheporuk extends Thread {
 
+    TransferPoint takePoint;
+    TransferPoint givePoint;
+
+    Necheporuk(TransferPoint takePoint, TransferPoint givePoint) {
+        this.takePoint = takePoint;
+        this.givePoint = givePoint;
+    }
+
     @Override
     public void run() {
         while(!Thread.interrupted()) {
-            if(Main.packed.size() > 0) {
-                int calculating;
+            if(takePoint.size() > 0) {
+                int calculating = takePoint.take();
 
-                synchronized (Main.packed) {
-                    calculating = Main.packed.get(0);
-                    Main.packed.remove(0);
-                }
-
-                Main.calculated.add(calculating);
+                givePoint.give(calculating);
 
                 System.out.println("Necheporuk calculated item " + calculating);
             }
 
-            if (Main.calculated.size() == Main.amount) {
+            if (givePoint.size() == givePoint.amount) {
                 break;
             }
         }

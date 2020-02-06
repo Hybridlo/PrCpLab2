@@ -5,12 +5,9 @@ import java.util.Scanner;
 
 public class Main {
 
-    static Integer done = 0;
-    static ArrayList<ArrayList<Integer>> a;
+    public static void main (String[] args) throws FileNotFoundException {
 
-    public static void main (String args []) throws FileNotFoundException {
-
-        a = new ArrayList<>();
+        ArrayList<ArrayList<Integer>> array = new ArrayList<>();
         Scanner input = new Scanner(new File("src/array.txt"));
         while(input.hasNextLine())
         {
@@ -20,13 +17,17 @@ public class Main {
             {
                 col.add(colReader.nextInt());
             }
-            a.add(col);
+            array.add(col);
         }
+
+        Manager manager = new Manager();
+
+        manager.array = array;
 
         int thread_amount = 4;
 
         for (int i = 0; i < thread_amount; i++) {
-            BeesThread thread = new BeesThread();
+            BeesThread thread = new BeesThread(manager);
             thread.start();
         }
     }

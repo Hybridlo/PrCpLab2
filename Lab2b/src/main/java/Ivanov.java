@@ -1,16 +1,20 @@
 public class Ivanov extends Thread {
 
+    TransferPoint takePoint;
+    TransferPoint givePoint;
+
+    Ivanov(TransferPoint takePoint, TransferPoint givePoint) {
+        this.takePoint = takePoint;
+        this.givePoint = givePoint;
+    }
+
     @Override
     public void run() {
         while(!Thread.interrupted()) {
-            while(Main.storage.size() > 0) {
-                int taking = Main.storage.get(0);
+            while(takePoint.size() > 0) {
+                int taking = takePoint.take();
 
-                Main.storage.remove(0);
-
-                synchronized (Main.broughtOut) {
-                    Main.broughtOut.add(taking);
-                }
+                givePoint.give(taking);
 
                 System.out.println("Ivanov brought out item " + taking);
             }

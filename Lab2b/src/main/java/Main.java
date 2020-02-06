@@ -2,21 +2,24 @@ import java.util.ArrayList;
 
 public class Main {
 
-    static ArrayList<Integer> storage = new ArrayList<>();
-    static ArrayList<Integer> broughtOut = new ArrayList<>();
-    static ArrayList<Integer> packed = new ArrayList<>();
-    static ArrayList<Integer> calculated = new ArrayList<>();
-    static int amount = 20;
-
     public static void main(String args[]) throws InterruptedException {
+
+        ArrayList<Integer> storage = new ArrayList<>();
+
+        int amount = 20;
 
         for (int i = 0; i < amount; i++) {
             storage.add(i);
         }
 
-        Ivanov ivanov = new Ivanov();
-        Petrov petrov = new Petrov();
-        Necheporuk necheporuk = new Necheporuk();
+        TransferPoint tp1 = new TransferPoint(amount, storage);
+        TransferPoint tp2 = new TransferPoint(amount);
+        TransferPoint tp3 = new TransferPoint(amount);
+        TransferPoint tp4 = new TransferPoint(amount);
+
+        Ivanov ivanov = new Ivanov(tp1, tp2);
+        Petrov petrov = new Petrov(tp2, tp3);
+        Necheporuk necheporuk = new Necheporuk(tp3, tp4);
         ivanov.start();
         petrov.start();
         necheporuk.start();

@@ -2,18 +2,24 @@ import java.util.ArrayList;
 
 public class BeesThread extends Thread {
 
+    Manager manager;
+
+    BeesThread(Manager manager) {
+        this.manager = manager;
+    }
+
     @Override
     public void run() {
         while(!Thread.interrupted()) {
             int y;
             ArrayList<Integer> check;
 
-            synchronized (Main.done) {
-                if (Main.done >= Main.a.size())
+            synchronized (manager.done) {
+                if (manager.done >= manager.array.size())
                     break;
 
-                y = Main.done;
-                check = Main.a.get(y);
+                y = manager.done;
+                check = manager.array.get(y);
             }
 
             boolean found = false;
@@ -22,15 +28,15 @@ public class BeesThread extends Thread {
                 if (check.get(i) == 1) {
                     found = true;
                     System.out.println("Vinnie found at y: " + (y + 1) + " x: " + (i + 1));
-                    synchronized (Main.done) {
-                        Main.done = Main.a.size();
+                    synchronized (manager.done) {
+                        manager.done = manager.array.size();
                     }
                 }
 
             if (!found) {
                 System.out.println("Vinnie not found at row " + (y + 1));
-                synchronized (Main.done) {
-                    Main.done++;
+                synchronized (manager.done) {
+                    manager.done++;
                 }
             }
         }

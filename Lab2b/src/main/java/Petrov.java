@@ -1,19 +1,20 @@
 public class Petrov extends Thread {
 
+    TransferPoint takePoint;
+    TransferPoint givePoint;
+
+    Petrov(TransferPoint takePoint, TransferPoint givePoint) {
+        this.takePoint = takePoint;
+        this.givePoint = givePoint;
+    }
+
     @Override
     public void run() {
         while(!Thread.interrupted()) {
-            if(Main.broughtOut.size() > 0) {
-                int packing;
+            if(takePoint.size() > 0) {
+                int packing = takePoint.take();
 
-                synchronized (Main.broughtOut) {
-                    packing = Main.broughtOut.get(0);
-                    Main.broughtOut.remove(0);
-                }
-
-                synchronized (Main.packed) {
-                    Main.packed.add(packing);
-                }
+                givePoint.give(packing);
 
                 System.out.println("Petrov packed item " + packing);
             }
